@@ -1,0 +1,28 @@
+.user-page{
+    display: flex;
+    flex-direction: column;
+    width: 95vw;
+    height: calc(100vh - 80px); 
+    margin: 0 auto;
+    margin-left: 117px;
+    // margin-top: 80px;
+    padding: 20px;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    .header {
+    display: flex;
+    flex-direction: column;
+    & h1{
+        font-size: 48px;
+        font-weight: 500;
+    }
+    & span{
+        color: #FF0101;
+    }
+    & p{
+        margin-top: 41px;
+        font-size: 18px;
+        font-weight: 400;
+    }
+}
+}

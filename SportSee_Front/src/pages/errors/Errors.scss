@@ -1,0 +1,49 @@
+@use "../../utils/style/variables" as v;
+
+.not-found {
+  margin-bottom: 139px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 139px;
+
+  h1 {
+    margin: 0;
+    font-size: 288px;
+    font-weight: 700;
+    color: v.$red;
+  }
+
+  p {
+    font-size: 36px;
+    font-weight: 500;
+    color: v.$red;
+    text-align: center;
+  }
+
+  a {
+    font-size: 18px;
+    font-weight: 500;
+    color: v.$black;
+  }
+
+  @media (max-width: 375px) {
+    margin-top: 93px;
+    margin-bottom: 113px;
+    gap: 113px;
+
+    h1 {
+      font-size: 96px;
+    }
+
+    p {
+      font-size: 18px;
+      width: 260px;
+    }
+
+    a {
+      font-size: 14px;
+    }
+  }
+}

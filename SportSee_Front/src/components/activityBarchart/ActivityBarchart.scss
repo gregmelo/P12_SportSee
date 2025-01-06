@@ -1,0 +1,62 @@
+@use "../../utils/style/variables" as v;
+
+.activity-barchart {
+    background-color: v.$background-graph;
+    border-radius: 5px;
+    padding: 10px; 
+    width: 100%;/* Prend 100% de la largeur de la div parent */
+    display: flex; /* Flexbox pour organiser le contenu */
+    flex-direction: column;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h2 {
+            font-size: 15px;
+            font-weight: 500;
+        }
+    }
+
+    &__legend {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 277px;
+        .weight, .calories {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            p {
+                margin: 0;
+                font-size: 14px;
+                color: v.$grey;
+            }
+        }
+        .weight-dot {
+            color: v.$background-graph-dark;
+            font-size: 32px;
+        }
+        .calories-dot {
+            color: v.$red;
+            font-size: 32px;
+        }
+    }
+
+    &__content {
+        flex: 1; /* S'étend pour remplir l'espace restant */
+        .customized-tooltip{
+            background-color: v.$red;
+            padding: 10px;
+            color: v.$white;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+
+        }
+        .recharts-responsive-container {
+            width: 100%; /* S'étend horizontalement */
+            height: 100%; /* S'étend verticalement */
+        }
+    }
+}

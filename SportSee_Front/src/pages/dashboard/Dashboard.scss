@@ -1,0 +1,70 @@
+@use "../../utils/style/variables" as v;
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colonnes */
+    grid-template-rows: auto repeat(2, 1fr); /* 1 ligne auto (titre) + 2 lignes flexibles */
+    width: 95vw;
+    height: calc(100vh - 100px);
+    margin: 80px auto 20px 117px;
+    padding: 0 20px;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    column-gap: 20px;
+    row-gap: 10px;
+
+    .header {
+        grid-column: 1 / -1; /* Occupe toute la première ligne */
+        display: flex;
+        flex-direction: column;
+        // text-align: center;
+
+        h1 {
+            font-size: 48px;
+            font-weight: 500;
+            margin-bottom: 0;
+        }
+        span {
+            color: v.$red;
+        }
+        p {
+            font-size: 18px;
+            font-weight: 400;
+        }
+    }
+
+    .graph-1 {
+        grid-column: 1 / 4; /* Occupe 3 colonnes sur la 2ème ligne */
+        grid-row: 2 / 3;
+        display: flex; /* Permet une gestion fine du contenu */
+        align-items: stretch; /* Étend les enfants verticalement */
+        height: 100%; /* S'aligne avec la hauteur définie par la grille */
+    }
+
+    .graph-2,
+    .graph-3,
+    .graph-4 {
+        grid-row: 3 / 4; /* 3 graphiques différents sur la 3ème ligne */
+        height: 260px;
+        width: 260px;
+    }
+    .graph-2 {
+        grid-column: 1 / 2;
+        display: flex;
+        align-items: stretch;
+    }
+    .graph-3 {
+        grid-column: 2 / 3;
+    }
+    .graph-4 {
+        grid-column: 3 / 4;
+        display: flex;
+        align-items: stretch; /* Étend les enfants verticalement */
+    }
+
+    .graph-5 {
+        grid-column: 4 / 5; /* Colonne unique sur les lignes 2 et 3 */
+        grid-row: 2 / 4;
+    }
+}
+

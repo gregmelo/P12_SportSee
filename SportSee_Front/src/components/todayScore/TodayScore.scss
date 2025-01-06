@@ -1,0 +1,42 @@
+@use "../../utils/style/variables" as v;
+
+.today-score {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Centre tout horizontalement */
+    width: 260px;
+    height: 260px;
+    position: relative; /* Nécessaire pour positionner `.legende` en absolu */
+  
+    h2 {
+      margin: 24px 0 0 30px;
+      font-size: 15px;
+      font-weight: 500;
+      color: v.$background-graph-dark;
+      position: absolute; /* Permet de garder le titre dans sa position */
+      top: 0;
+      left: 0;
+    }
+  
+    .legende {
+      position: absolute; /* Positionne la légende par rapport au parent `.today-score` */
+      top: 50%; /* Centre verticalement */
+      left: 50%; /* Centre horizontalement */
+      transform: translate(-50%, -50%); /* Ajuste pour un positionnement exact au centre */
+      color: #9b9eac;
+      font-weight: 500;
+      line-height: 26px;
+      text-align: center;
+  
+      p {
+        margin: 0;
+      }
+  
+      .score {
+        color: v.$background-graph-dark;
+        font-size: 26px;
+        font-weight: 700;
+      }
+    }
+  }
