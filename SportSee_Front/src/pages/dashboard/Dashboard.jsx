@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ActivityBarchart from '../../components/activityBarchart/ActivityBarchart';
 import TodayScore from '../../components/todayScore/TodayScore';
-import SessionDuration from '../../components/sessionDuration/SessionDuration';
+import SessionDurationChart from '../../components/sessionDurationChart/SessionDurationChart';
 
 export default function Dashboard() {
     const { id } = useParams(); // userId récupéré depuis l'URL
@@ -65,7 +65,7 @@ export default function Dashboard() {
                     <div className="graph-1">
                     <ActivityBarchart sessions={userActivity ? userActivity.sessions : []}/>
                     </div>
-                    <div className="graph-2"><SessionDuration averageSessions={averageSessions}/></div>
+                    <div className="graph-2"><SessionDurationChart averageSessions={averageSessions}/></div>
                     <div className="graph-3">Graph 3</div>
                     <div className="graph-4"><TodayScore todayScore={todayScore}/></div>
                     <div className="graph-5">Graph 5</div>

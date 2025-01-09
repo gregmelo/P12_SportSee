@@ -22,6 +22,6 @@ export default function CustomizedTooltip({ active, payload, numberOfValues }) {
 CustomizedTooltip.propTypes = {
     active: PropTypes.bool,
     payload: PropTypes.array,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Accepter string ou number
     numberOfValues: PropTypes.number,
-}
+};

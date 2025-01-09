@@ -14,8 +14,8 @@ export default function CustomCursor({ points, height }) {
     <rect
       x={x - cursorWidth / 2} // Centre le rectangle autour du point
       y={0} // Le rectangle commence tout en haut
-      width={cursorWidth}
-      height={height || 0} // Assurez-vous que la hauteur est définie
+      width="100%" // Prend toute la largeur du graphique
+      height="100%" // Prend toute la hauteur du graphique
       fill="#000000"
       fillOpacity={0.1}
     />
