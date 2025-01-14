@@ -8,6 +8,11 @@ import ActivityBarchart from '../../components/activityBarchart/ActivityBarchart
 import TodayScore from '../../components/todayScore/TodayScore';
 import SessionDurationChart from '../../components/sessionDurationChart/SessionDurationChart';
 import PerformanceChart from '../../components/performanceChart/PerformanceChart';
+import NutritionCard from '../../components/NutritionCard/NutritionCard';
+import chickenIcon from '../../assets/nutrition_icons/chicken.png';
+import appleIcon from '../../assets/nutrition_icons/apple.png';
+import energyIcon from '../../assets/nutrition_icons/energy.png';
+import cheeseburgerIcon from '../../assets/nutrition_icons/cheeseburger.png';
 
 export default function Dashboard() {
     const { id } = useParams(); // userId récupéré depuis l'URL
@@ -72,7 +77,42 @@ export default function Dashboard() {
                     <div className="graph-2"><SessionDurationChart averageSessions={averageSessions}/></div>
                     <div className="graph-3"><PerformanceChart performanceData={performanceData}/></div>
                     <div className="graph-4"><TodayScore todayScore={todayScore}/></div>
-                    <div className="graph-5">Graph 5</div>
+                    <div className="graph-5">
+                        {[
+                            {
+                                icon: energyIcon,
+                                value: `${userData.keyData.calorieCount.toLocaleString('en-EN')}kCal`,
+                                label: "Calories",
+                                bgColor: "#FBEAEA"
+                            },
+                            {
+                                icon: chickenIcon,
+                                value: `${userData.keyData.proteinCount}g`,
+                                label: "Protéines",
+                                bgColor: "#e9f4fb"
+                            },
+                            {
+                                icon: appleIcon,
+                                value: `${userData.keyData.carbohydrateCount}g`,
+                                label: "Glucides",
+                                bgColor: "#FAF6E5"
+                            },
+                            {
+                                icon: cheeseburgerIcon,
+                                value: `${userData.keyData.lipidCount}g`,
+                                label: "Lipides",
+                                bgColor: "#FBEAEF"
+                            }
+                        ].map((cardData, index) => (
+                            <NutritionCard
+                                key={index}
+                                icon={cardData.icon}
+                                value={cardData.value}
+                                label={cardData.label}
+                                bgColor={cardData.bgColor}
+                            />
+                        ))}
+                    </div>
             </div>
                 ) : (
                     <p>Chargement des données...</p>
@@ -80,73 +120,3 @@ export default function Dashboard() {
         </>
     );
 }
-
-
-
-// import { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import Logo from "../../assets/logo.png";
-// import Woman from "../../assets/img/Woman.jpg";
-// import Man from "../../assets/img/Man.jpg";
-// import { USER_MAIN_DATA } from "../../mock/mockData";
-// import "../../utils/style/home_selector.scss";
-// import { useDataType } from "../../context/DataTypeContext";
-
-// const portraits = {
-//     18: Woman,
-//     12: Man,
-// };
-
-// export default function Home() {
-//     const { dataType } = useDataType();
-//     console.log("dataType: ", dataType);
-//     const [users, setUsers] = useState([]);
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             if (dataType === "api") {
-//                 try {
-//                     const response = await fetch(`http://localhost:3000/user`);
-//                     const data = await response.json();
-//                     // Transformez les données API pour correspondre au format attendu
-//                     const formattedData = data.map(user => ({
-//                         id: user.id,
-//                         name: `${user.userInfos.firstName} ${user.userInfos.lastName}`,
-//                     }));
-//                     setUsers(formattedData);
-//                 } catch (error) {
-//                     console.error("Erreur lors de la récupération des données API :", error);
-//                 }
-//             } else {
-//                 // Utilisation des données mockées
-//                 const formattedData = USER_MAIN_DATA.map(user => ({
-//                     id: user.id,
-//                     name: `${user.userInfos.firstName} ${user.userInfos.lastName}`,
-//                 }));
-//                 setUsers(formattedData);
-//             }
-//         };
-
-//         fetchData();
-//     }, [dataType]);
-
-//     return (
-//         <div className="page">
-//             <img src={Logo} alt="Logo" />
-//             <p>Veuillez sélectionner un utilisateur</p>
-//             <div className="page__options">
-//                 {users.map((user) => (
-//                     <Link key={user.id} to={{
-//                         pathname: `/user/${user.id}`,
-//                         state: { type: dataType }
-//                         }}>
-//                         <img src={portraits[user.id]} alt={`Portrait de ${user.name}`} />
-//                         {user.name}
-//                     </Link>
-//                 ))}
-//             </div>
-//         </div>
-//     );
-// }
-
-
