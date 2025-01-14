@@ -1,0 +1,19 @@
+@use "../../utils/style/variables" as v;
+
+.performance-chart {
+    background-color: v.$background-graph-dark;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+    flex: 1; /* Permet au conteneur de s'étendre */
+    box-shadow: 0px 2px 4px 0px #00000005;
+    display: flex; /* Ajout pour centrer le graphique */
+    justify-content: center;
+    align-items: center;
+
+    .recharts-polar-angle-axis-tick-value tspan{
+        font-weight: bold;
+        font-size: 10px;
+      }
+}
+

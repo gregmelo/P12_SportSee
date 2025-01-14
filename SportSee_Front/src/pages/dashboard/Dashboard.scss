@@ -3,8 +3,8 @@
 .dashboard {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 colonnes */
-    grid-template-rows: auto repeat(2, 1fr); /* 1 ligne auto (titre) + 2 lignes flexibles */
-    width: 95vw;
+    grid-template-rows: auto 1fr 1fr; /* 1 ligne auto (titre) + 2 lignes flexibles */
+    width: 90vw;
     height: calc(100vh - 100px);
     margin: 80px auto 20px 117px;
     padding: 0 20px;
@@ -45,8 +45,6 @@
     .graph-3,
     .graph-4 {
         grid-row: 3 / 4; /* 3 graphiques différents sur la 3ème ligne */
-        height: 260px;
-        width: 260px;
     }
     .graph-2 {
         grid-column: 1 / 2;
@@ -55,11 +53,12 @@
     }
     .graph-3 {
         grid-column: 2 / 3;
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
     }
     .graph-4 {
         grid-column: 3 / 4;
-        display: flex;
-        align-items: stretch; /* Étend les enfants verticalement */
     }
 
     .graph-5 {

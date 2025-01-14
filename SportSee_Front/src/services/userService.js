@@ -92,12 +92,32 @@ export const getUserAverageSessions = async (userId) => {
 };
 
 export const getUserPerformance = async (userId) => {
-    if (USE_MOCK_DATA) {
-        return USER_PERFORMANCE.find(performance => performance.userId === userId);
+    console.log('Fetching performance for userId: ', userId);
+
+    try {
+        if (!userId) {
+            throw new Error('L\'ID utilisateur est requis.');
+        }
+
+        if (USE_MOCK_DATA) {
+            const userPerformance = USER_PERFORMANCE.find(performance => String(performance.userId) === String(userId));
+            console.log('Mock data performance: ', userPerformance);
+            if (!userPerformance) {
+                throw new Error(`Utilisateur avec l'ID ${userId} introuvable dans les données mockées.`);
+            }
+            return userPerformance;
+        } else {
+            const response = await fetch(`${API_BASE_URL}/${userId}/performance`);
+            if (!response.ok) {
+                throw new Error(`Erreur lors de l'appel API (HTTP ${response.status}): ${response.statusText}`);
+            }
+
+            const performanceData = await response.json(); // Extraction des données JSON
+            console.log('API data peerformance: ', performanceData);
+            return performanceData.data;
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données utilisateur :', error);
+        throw error;
     }
-    const response = await fetch(`${API_BASE_URL}/${userId}/performance`);
-    if (!response.ok) {
-        throw new Error('Failed to fetch user performance');
-    }
-    return await response.json();
 };

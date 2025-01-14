@@ -37,7 +37,7 @@ export default function ActivityBarchart({ sessions }) {
             data={sessions}
             >
                 <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-                <XAxis dataKey="day" tickFormatter={(value, index) => index + 1} tickLine={false}/>
+                <XAxis dataKey="day" tickFormatter={(value, index) => index + 1} tickLine={false} tick={{ fontSize:14, fill: '#9B9EAC'}}/>
                 <YAxis 
                 yAxisId="Poids"
                 orientation='right'
@@ -46,6 +46,7 @@ export default function ActivityBarchart({ sessions }) {
                 domain={[minWeight - 1, maxWeight + 1]}
                 tickCount={maxWeight - minWeight + 3}
                 interval={0}
+                tick={{ fontSize: 14, fill: '#9B9EAC'}}
                 />
                 <YAxis
                 yAxisId="Calories"

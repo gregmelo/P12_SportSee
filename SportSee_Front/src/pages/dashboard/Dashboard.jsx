@@ -1,12 +1,13 @@
 import './Dashboard.scss';
 import TopNav from '../../components/topNav/TopNav';
 import LeftNav from '../../components/leftNav/LeftNav';
-import { getUserMainData, getUserActivity, getUserAverageSessions } from '../../services/userService';
+import { getUserMainData, getUserActivity, getUserAverageSessions, getUserPerformance } from '../../services/userService';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ActivityBarchart from '../../components/activityBarchart/ActivityBarchart';
 import TodayScore from '../../components/todayScore/TodayScore';
 import SessionDurationChart from '../../components/sessionDurationChart/SessionDurationChart';
+import PerformanceChart from '../../components/performanceChart/PerformanceChart';
 
 export default function Dashboard() {
     const { id } = useParams(); // userId récupéré depuis l'URL
@@ -16,6 +17,7 @@ export default function Dashboard() {
     const [todayScore, setTodayScore] = useState(null);
     const [error, setError] = useState(null);
     const [averageSessions, setAverageSessions] = useState(null);
+    const [performanceData, setUserPerformance] = useState(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,14 +32,16 @@ export default function Dashboard() {
                 const averageSessions = await getUserAverageSessions(id);
                 setAverageSessions(averageSessions);
                 console.log("averageSessions: ", averageSessions);
-                            // Transformation si nécessaire
-            const transformedSessions = activityData.sessions.map((session, index) => ({
+                // Transformation si nécessaire
+                const transformedSessions = activityData.sessions.map((session, index) => ({
                 ...session,
                 day: `Jour ${index + 1}`, // Par exemple, changer "2023-12-25" en "Jour 1"
             }));
             
             setUserActivity({ ...activityData, sessions: transformedSessions });
             console.log("transformedSessions: ", transformedSessions);
+            const performanceData = await getUserPerformance(id);
+            setUserPerformance(performanceData);
         } catch (err) {
             setError('Une erreur est survenue lors du chargement des données.');
             console.error(err);
@@ -66,7 +70,7 @@ export default function Dashboard() {
                     <ActivityBarchart sessions={userActivity ? userActivity.sessions : []}/>
                     </div>
                     <div className="graph-2"><SessionDurationChart averageSessions={averageSessions}/></div>
-                    <div className="graph-3">Graph 3</div>
+                    <div className="graph-3"><PerformanceChart performanceData={performanceData}/></div>
                     <div className="graph-4"><TodayScore todayScore={todayScore}/></div>
                     <div className="graph-5">Graph 5</div>
             </div>
