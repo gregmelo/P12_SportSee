@@ -13,58 +13,56 @@ import chickenIcon from '../../assets/nutrition_icons/chicken.png';
 import appleIcon from '../../assets/nutrition_icons/apple.png';
 import energyIcon from '../../assets/nutrition_icons/energy.png';
 import cheeseburgerIcon from '../../assets/nutrition_icons/cheeseburger.png';
+import Error from '../errors/Errors';
 
 export default function Dashboard() {
     const { id } = useParams(); // userId récupéré depuis l'URL
-    console.log("userId: ", id);
     const [userData, setUserData] = useState(null);
     const [userActivity, setUserActivity] = useState(null);
     const [todayScore, setTodayScore] = useState(null);
-    const [error, setError] = useState(null);
     const [averageSessions, setAverageSessions] = useState(null);
-    const [performanceData, setUserPerformance] = useState(null)
+    const [performanceData, setUserPerformance] = useState(null);
+    const [error, setError] = useState(false); // État pour indiquer une erreur
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await getUserMainData(id);
+                if (!data) throw new Error('Utilisateur non trouvé');
                 setUserData(data);
-                console.log("data dashboard: ", data);
+
                 const activityData = await getUserActivity(id);
                 const todayScore = data.score || data.todayScore;
                 setTodayScore(todayScore);
-                console.log("todayScore: ", todayScore);
+
                 const averageSessions = await getUserAverageSessions(id);
                 setAverageSessions(averageSessions);
-                console.log("averageSessions: ", averageSessions);
-                // Transformation si nécessaire
+
                 const transformedSessions = activityData.sessions.map((session, index) => ({
-                ...session,
-                day: `Jour ${index + 1}`, // Par exemple, changer "2023-12-25" en "Jour 1"
-            }));
-            
-            setUserActivity({ ...activityData, sessions: transformedSessions });
-            console.log("transformedSessions: ", transformedSessions);
-            const performanceData = await getUserPerformance(id);
-            setUserPerformance(performanceData);
-        } catch (err) {
-            setError('Une erreur est survenue lors du chargement des données.');
-            console.error(err);
-        }
+                    ...session,
+                    day: `Jour ${index + 1}`,
+                }));
+                setUserActivity({ ...activityData, sessions: transformedSessions });
+
+                const performanceData = await getUserPerformance(id);
+                setUserPerformance(performanceData);
+            } catch (err) {
+                console.error(err);
+                setError(true); // Active l'état d'erreur
+            }
         };
-    
+
         fetchData();
     }, [id]);
 
-    
     return (
         <>
             <TopNav />
             <LeftNav />
-                {error ? (
-                    <p>{error}</p>
-                ) : userData ? (
-            <div className="dashboard">
+            {error ? (
+                <Error /> // Affiche la page d'erreur si une erreur est détectée
+            ) : userData ? (
+                <div className="dashboard">
                     <div className="header">
                         <h1>
                             Bonjour <span>{userData.userInfos.firstName}</span>
@@ -72,11 +70,11 @@ export default function Dashboard() {
                         <p>Félicitations ! Vous avez explosé vos objectifs hier 👏</p>
                     </div>
                     <div className="graph-1">
-                    <ActivityBarchart sessions={userActivity ? userActivity.sessions : []}/>
+                        <ActivityBarchart sessions={userActivity ? userActivity.sessions : []} />
                     </div>
-                    <div className="graph-2"><SessionDurationChart averageSessions={averageSessions}/></div>
-                    <div className="graph-3"><PerformanceChart performanceData={performanceData}/></div>
-                    <div className="graph-4"><TodayScore todayScore={todayScore}/></div>
+                    <div className="graph-2"><SessionDurationChart averageSessions={averageSessions} /></div>
+                    <div className="graph-3"><PerformanceChart performanceData={performanceData} /></div>
+                    <div className="graph-4"><TodayScore todayScore={todayScore} /></div>
                     <div className="graph-5">
                         {[
                             {
@@ -113,10 +111,10 @@ export default function Dashboard() {
                             />
                         ))}
                     </div>
-            </div>
-                ) : (
-                    <p>Chargement des données...</p>
-                )}
+                </div>
+            ) : (
+                <p>Chargement des données...</p>
+            )}
         </>
     );
 }
