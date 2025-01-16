@@ -23,6 +23,8 @@ export default function Dashboard() {
     const [averageSessions, setAverageSessions] = useState(null);
     const [performanceData, setUserPerformance] = useState(null);
     const [error, setError] = useState(false); // État pour indiquer une erreur
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,36 +32,42 @@ export default function Dashboard() {
                 const data = await getUserMainData(id);
                 if (!data) throw new Error('Utilisateur non trouvé');
                 setUserData(data);
-
+    
                 const activityData = await getUserActivity(id);
                 const todayScore = data.score || data.todayScore;
                 setTodayScore(todayScore);
-
+    
                 const averageSessions = await getUserAverageSessions(id);
                 setAverageSessions(averageSessions);
-
+    
                 const transformedSessions = activityData.sessions.map((session, index) => ({
                     ...session,
                     day: `Jour ${index + 1}`,
                 }));
                 setUserActivity({ ...activityData, sessions: transformedSessions });
-
+    
                 const performanceData = await getUserPerformance(id);
                 setUserPerformance(performanceData);
+    
+                setLoading(false); // Terminer le chargement
             } catch (err) {
                 console.error(err);
                 setError(true); // Active l'état d'erreur
+                setLoading(false); // Terminer le chargement même en cas d'erreur
             }
         };
-
+    
         fetchData();
     }, [id]);
+    
 
     return (
         <>
             <TopNav />
             <LeftNav />
-            {error ? (
+            {loading ? (
+                <div className="loading">Chargement des données...</div> // Composant de chargement
+            ) : error ? (
                 <Error /> // Affiche la page d'erreur si une erreur est détectée
             ) : userData ? (
                 <div className="dashboard">
@@ -117,4 +125,5 @@ export default function Dashboard() {
             )}
         </>
     );
+    
 }

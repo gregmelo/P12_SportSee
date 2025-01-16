@@ -113,8 +113,17 @@ export const getUserPerformance = async (userId) => {
             }
 
             const performanceData = await response.json(); // Extraction des données JSON
-            console.log('API data peerformance: ', performanceData);
-            return performanceData.data;
+            console.log('API data performance: ', performanceData);
+
+            // Normalisation des données API pour correspondre aux données mockées
+            const normalizedData = {
+                userId: performanceData.data.userId,
+                kind: performanceData.data.kind,
+                data: performanceData.data.data,
+            };
+
+            console.log('Normalized API data:', normalizedData);
+            return normalizedData;
         }
     } catch (error) {
         console.error('Erreur lors de la récupération des données utilisateur :', error);

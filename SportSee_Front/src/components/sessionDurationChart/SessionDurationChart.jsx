@@ -73,9 +73,9 @@ export default function SessionDurationChart({ averageSessions }) {
           <Area
             type="monotone"
             dataKey="sessionLength"
-            stroke="none" // Aucune bordure pour l'Area
-            fill="#000000" // Couleur de fond sous la courbe
-            fillOpacity={0.3} // Transparence de la couleur
+            stroke="#FFFFFF" // Aucune bordure pour l'Area
+            fill="url(#colorGradient)" // Couleur de fond sous la courbe
+            fillOpacity={1} // Transparence de la couleur
           />
           <Line
             type="monotone"
@@ -85,6 +85,12 @@ export default function SessionDurationChart({ averageSessions }) {
             dot={false}
             activeDot={{ r: 8 }}
           />
+  <defs>
+    <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="5%" stopColor="#FFFFFF" stopOpacity={0.8}/> 
+      <stop offset="95%" stopColor="#000000" stopOpacity={0.8}/>
+    </linearGradient>
+  </defs>
         </LineChart>
       </ResponsiveContainer>
     </div>
