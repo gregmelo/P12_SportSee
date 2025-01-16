@@ -14,7 +14,7 @@ export default function CustomCursor({ points, height }) {
     <rect
       x={x - cursorWidth / 2} // Centre le rectangle autour du point
       y={0} // Le rectangle commence tout en haut
-      width="100%" // Prend toute la largeur du graphique
+      width="105%" // Prend un peu plus que la largeur du graphique afin de contrer le bug du lundi ou le masque ne prenais pas la zone après dimanche
       height="100%" // Prend toute la hauteur du graphique
       fill="#000000"
       fillOpacity={0.1}
