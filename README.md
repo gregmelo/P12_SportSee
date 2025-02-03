@@ -29,7 +29,7 @@ Pour configurer le projet localement, suivez ces étapes :
 
 1. Clonez le dépôt :
     ```bash
-    git clone https://github.com/gregmelo/SportSee.git
+    git clone https://github.com/gregmelo/P12_SportSee.git
     ```
 2. Accédez au répertoire du frontend :
     ```bash
