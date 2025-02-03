@@ -15,75 +15,96 @@ import energyIcon from '../../assets/nutrition_icons/energy.png';
 import cheeseburgerIcon from '../../assets/nutrition_icons/cheeseburger.png';
 import Error from '../errors/Errors';
 
+/**
+ * Composant principal du Dashboard.
+ * Affiche les informations de l'utilisateur, ses graphiques et ses données de nutrition.
+ *
+ * @returns {JSX.Element} Le composant du Dashboard.
+ */
 export default function Dashboard() {
-    const { id } = useParams(); // userId récupéré depuis l'URL
-    const [userData, setUserData] = useState(null);
-    const [userActivity, setUserActivity] = useState(null);
-    const [todayScore, setTodayScore] = useState(null);
-    const [averageSessions, setAverageSessions] = useState(null);
-    const [performanceData, setUserPerformance] = useState(null);
-    const [error, setError] = useState(false); // État pour indiquer une erreur
-    const [loading, setLoading] = useState(true);
-
+    const { id } = useParams(); // Récupère l'ID de l'utilisateur depuis l'URL
+    const [useMockData] = useState(() => localStorage.getItem('useMockData') === 'true'); // Vérifie si les données de mock sont activées
+    const [userData, setUserData] = useState(null); // Stocke les informations de l'utilisateur
+    const [userActivity, setUserActivity] = useState(null); // Stocke les données d'activité de l'utilisateur
+    const [todayScore, setTodayScore] = useState(null); // Stocke le score du jour
+    const [averageSessions, setAverageSessions] = useState(null); // Stocke les sessions moyennes
+    const [performanceData, setUserPerformance] = useState(null); // Stocke les données de performance
+    const [error, setError] = useState(false); // Indicateur d'erreur
+    const [loading, setLoading] = useState(true); // Indicateur de chargement
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getUserMainData(id);
+                // Récupération des données principales de l'utilisateur
+                const data = await getUserMainData(id, useMockData);
                 if (!data) throw new Error('Utilisateur non trouvé');
                 setUserData(data);
     
-                const activityData = await getUserActivity(id);
-                const todayScore = data.score || data.todayScore;
+                // Récupération des données d'activité de l'utilisateur
+                const activityData = await getUserActivity(id, useMockData);
+                const todayScore = data.score || data.todayScore; // Calcul du score du jour
                 setTodayScore(todayScore);
     
-                const averageSessions = await getUserAverageSessions(id);
+                // Récupération des sessions moyennes
+                const averageSessions = await getUserAverageSessions(id, useMockData);
                 setAverageSessions(averageSessions);
     
+                // Transformation des sessions d'activité pour afficher le jour
                 const transformedSessions = activityData.sessions.map((session, index) => ({
                     ...session,
                     day: `Jour ${index + 1}`,
                 }));
                 setUserActivity({ ...activityData, sessions: transformedSessions });
     
-                const performanceData = await getUserPerformance(id);
+                // Récupération des données de performance
+                const performanceData = await getUserPerformance(id, useMockData);
                 setUserPerformance(performanceData);
     
-                setLoading(false); // Terminer le chargement
+                setLoading(false); // Désactive l'état de chargement une fois les données récupérées
             } catch (err) {
                 console.error(err);
-                setError(true); // Active l'état d'erreur
-                setLoading(false); // Terminer le chargement même en cas d'erreur
+                setError(true); // Active l'état d'erreur en cas d'échec
+                setLoading(false); // Désactive l'état de chargement même en cas d'erreur
             }
         };
     
         fetchData();
-    }, [id]);
-    
+    }, [id, useMockData]); // Déclenche le useEffect chaque fois que l'id ou useMockData change
 
     return (
         <>
-            <TopNav />
-            <LeftNav />
+            <TopNav /> {/* Barre de navigation en haut */}
+            <LeftNav /> {/* Barre de navigation à gauche */}
             {loading ? (
-                <div className="loading">Chargement des données...</div> // Composant de chargement
+                <div className="loading">Chargement des données...</div> // Message de chargement
             ) : error ? (
-                <Error /> // Affiche la page d'erreur si une erreur est détectée
+                <Error /> // Affiche la page d'erreur si une erreur survient
             ) : userData ? (
                 <div className="dashboard">
                     <div className="header">
                         <h1>
-                            Bonjour <span>{userData.userInfos.firstName}</span>
+                            Bonjour <span>{userData.userInfos.firstName}</span> {/* Affichage du prénom de l'utilisateur */}
                         </h1>
-                        <p>Félicitations ! Vous avez explosé vos objectifs hier 👏</p>
+                        <p>Félicitations ! Vous avez explosé vos objectifs hier 👏</p> {/* Message de félicitations */}
                     </div>
                     <div className="graph-1">
+                        {/* Graphique de l'activité de l'utilisateur */}
                         <ActivityBarchart sessions={userActivity ? userActivity.sessions : []} />
                     </div>
-                    <div className="graph-2"><SessionDurationChart averageSessions={averageSessions} /></div>
-                    <div className="graph-3"><PerformanceChart performanceData={performanceData} /></div>
-                    <div className="graph-4"><TodayScore todayScore={todayScore} /></div>
+                    <div className="graph-2">
+                        {/* Graphique des durées de session */}
+                        <SessionDurationChart averageSessions={averageSessions} />
+                    </div>
+                    <div className="graph-3">
+                        {/* Graphique des performances */}
+                        <PerformanceChart performanceData={performanceData} />
+                    </div>
+                    <div className="graph-4">
+                        {/* Affichage du score du jour */}
+                        <TodayScore todayScore={todayScore} />
+                    </div>
                     <div className="graph-5">
+                        {/* Affichage des données nutritionnelles */}
                         {[
                             {
                                 icon: energyIcon,
@@ -121,9 +142,8 @@ export default function Dashboard() {
                     </div>
                 </div>
             ) : (
-                <p>Chargement des données...</p>
+                <p>Chargement des données...</p> // Message de chargement
             )}
         </>
     );
-    
 }

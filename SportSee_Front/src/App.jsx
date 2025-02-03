@@ -1,6 +1,8 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Errors from './pages/errors/Errors';
 import Dashboard from './pages/dashboard/Dashboard';
+import Home from './pages/home/Home';
+import Layout from './components/layout/Layout'; // Import du Layout
 import './utils/style/style.scss';
 
 /**
@@ -14,13 +16,15 @@ import './utils/style/style.scss';
  */
 export default function App() {
   return (
-    <>
-      <Router>
-        <Routes>
+    <Router>
+      <Routes>
+        {/* Définir le layout comme un parent pour toutes les routes */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
           <Route path="/user/:id" element={<Dashboard />} />
           <Route path="*" element={<Errors />} />
-        </Routes>
-      </Router>
-    </>
+        </Route>
+      </Routes>
+    </Router>
   );
 }

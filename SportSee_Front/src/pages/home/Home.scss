@@ -1,0 +1,93 @@
+@use '../../utils/style/variables' as v;
+@use "sass:color";
+
+
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    font-family: v.$roboto;
+
+    h1 {
+        font-size: 2.5rem;
+        color: v.$red;
+        margin-bottom: 20px;
+    }
+
+    .page__options,
+    .page__users {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px 0;
+
+        .option, .user {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+
+            img {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 10px;
+                border-radius: 50%;
+                border: 2px solid v.$grey;
+                object-fit: cover;
+                object-position: center top;
+            }
+
+            span {
+                font-size: 1rem;
+                font-weight: bold;
+                color: v.$black;
+            }
+
+            &.active {
+                border-color: v.$red;
+                background-color: rgba(v.$red, 0.1);
+                transform: scale(1.05);
+
+                img {
+                    border-color: v.$red;
+                }
+
+                span {
+                    color: v.$red;
+                }
+            }
+
+            &:hover {
+                transform: scale(1.05);
+                background-color: rgba(v.$red, 0.1);
+            }
+        }
+    }
+
+    .navigate-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: v.$white;
+        background-color: v.$red;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            // background-color: darken(v.$red, 10%);
+            background-color: color.scale(v.$red, $lightness: -10%);
+
+        }
+    }
+}

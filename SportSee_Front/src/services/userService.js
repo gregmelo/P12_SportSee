@@ -1,14 +1,13 @@
-import { USE_MOCK_DATA } from '../config';
+// import { USE_MOCK_DATA } from '../config';
 import { USER_MAIN_DATA, USER_ACTIVITY, USER_AVERAGE_SESSIONS, USER_PERFORMANCE } from '../mock/mockData';
 
 const API_BASE_URL = 'http://localhost:3000/user';
 
-export const getUserMainData = async (userId) => {
-    console.log('userId: ', userId);
+export const getUserMainData = async (userId, useMockData) => {
+
     try{
-    if (USE_MOCK_DATA) {
+    if (useMockData) {
         const user = USER_MAIN_DATA.find(user => String(user.id) === String(userId));
-        console.log ('data Mock: ', user);
         if (!user) {
             throw new Error(`Utilisateur avec l'ID ${userId} introuvable dans les données mockées.`);
         }
@@ -19,7 +18,6 @@ export const getUserMainData = async (userId) => {
             throw new Error(`Erreur lors de l'appel API ${response.status}: ${response.statusText}`);
         }
         const responseData = await response.json(); // Extraire les données JSON
-        console.log('data API: ', responseData);
         return responseData.data;
         }
     }catch (error) {
@@ -28,17 +26,15 @@ export const getUserMainData = async (userId) => {
     }
 };
 
-export const getUserActivity = async (userId) => {
-    console.log('Fetching activity for userId: ', userId);
+export const getUserActivity = async (userId, useMockData) => {
 
     try {
         if (!userId) {
             throw new Error('L\'ID utilisateur est requis.');
         }
 
-        if (USE_MOCK_DATA) {
+        if (useMockData) {
             const userActivity = USER_ACTIVITY.find(activity => String(activity.userId) === String(userId));
-            console.log('Mock data activity: ', userActivity);
             if (!userActivity) {
                 throw new Error(`Utilisateur avec l'ID ${userId} introuvable dans les données mockées.`);
             }
@@ -50,7 +46,6 @@ export const getUserActivity = async (userId) => {
             }
 
             const activityData = await response.json(); // Extraction des données JSON
-            console.log('API data activity: ', activityData);
             return activityData.data;
         }
     } catch (error) {
@@ -60,17 +55,15 @@ export const getUserActivity = async (userId) => {
 };
 
 
-export const getUserAverageSessions = async (userId) => {
-    console.log('Fetching activity for userId: ', userId);
+export const getUserAverageSessions = async (userId, useMockData) => {
 
     try {
         if (!userId) {
             throw new Error('L\'ID utilisateur est requis.');
         }
 
-        if (USE_MOCK_DATA) {
+        if (useMockData) {
             const userAverageSessions = USER_AVERAGE_SESSIONS.find(sessions => String(sessions.userId) === String(userId));
-            console.log('Mock data sessions duration: ', userAverageSessions);
             if (!userAverageSessions) {
                 throw new Error(`Utilisateur avec l'ID ${userId} introuvable dans les données mockées.`);
             }
@@ -82,7 +75,6 @@ export const getUserAverageSessions = async (userId) => {
             }
 
             const sessionsDuration = await response.json(); // Extraction des données JSON
-            console.log('API data sessions duration: ', sessionsDuration);
             return sessionsDuration.data;
         }
     } catch (error) {
@@ -91,17 +83,15 @@ export const getUserAverageSessions = async (userId) => {
     }
 };
 
-export const getUserPerformance = async (userId) => {
-    console.log('Fetching performance for userId: ', userId);
+export const getUserPerformance = async (userId, useMockData) => {
 
     try {
         if (!userId) {
             throw new Error('L\'ID utilisateur est requis.');
         }
 
-        if (USE_MOCK_DATA) {
+        if (useMockData) {
             const userPerformance = USER_PERFORMANCE.find(performance => String(performance.userId) === String(userId));
-            console.log('Mock data performance: ', userPerformance);
             if (!userPerformance) {
                 throw new Error(`Utilisateur avec l'ID ${userId} introuvable dans les données mockées.`);
             }
@@ -113,7 +103,6 @@ export const getUserPerformance = async (userId) => {
             }
 
             const performanceData = await response.json(); // Extraction des données JSON
-            console.log('API data performance: ', performanceData);
 
             // Normalisation des données API pour correspondre aux données mockées
             const normalizedData = {
@@ -122,7 +111,6 @@ export const getUserPerformance = async (userId) => {
                 data: performanceData.data.data,
             };
 
-            console.log('Normalized API data:', normalizedData);
             return normalizedData;
         }
     } catch (error) {
