@@ -1,4 +1,4 @@
-# SportSee
+# [](./SportSee_Front/src/assets/logo.png)
 
 SportSee est une application web pour suivre et analyser vos activités sportives. Ce README fournit un aperçu du projet, des instructions d'installation et des directives d'utilisation.
 
