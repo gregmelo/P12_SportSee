@@ -14,6 +14,7 @@ import appleIcon from '../../assets/nutrition_icons/apple.png';
 import energyIcon from '../../assets/nutrition_icons/energy.png';
 import cheeseburgerIcon from '../../assets/nutrition_icons/cheeseburger.png';
 import Error from '../errors/Errors';
+import TodayScoreModel from '../../components/todayScore/TodayScoreModel';
 
 /**
  * Composant principal du Dashboard.
@@ -42,8 +43,7 @@ export default function Dashboard() {
     
                 // Récupération des données d'activité de l'utilisateur
                 const activityData = await getUserActivity(id, useMockData);
-                const todayScore = data.score || data.todayScore; // Calcul du score du jour
-                setTodayScore(todayScore);
+                setTodayScore(new TodayScoreModel(data.score || data.todayScore));
     
                 // Récupération des sessions moyennes
                 const averageSessions = await getUserAverageSessions(id, useMockData);
@@ -101,7 +101,7 @@ export default function Dashboard() {
                     </div>
                     <div className="graph-4">
                         {/* Affichage du score du jour */}
-                        <TodayScore todayScore={todayScore} />
+                        <TodayScore todayScore={todayScore.score} />
                     </div>
                     <div className="graph-5">
                         {/* Affichage des données nutritionnelles */}
