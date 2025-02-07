@@ -25,8 +25,8 @@ export default class TodayScoreModel {
      */
     getChartData() {
     return [
-        { name: 'Score', value: this.score },
-        { name: 'Reste', value: 100 - this.score },
+        { name: 'Score', value: this.score * 100 },
+        { name: 'Reste', value: 100 - (this.score * 100) },
     ];
     }
 }
